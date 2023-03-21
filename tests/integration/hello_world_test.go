@@ -1,8 +1,6 @@
-package functional
+package integration
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -10,7 +8,9 @@ type ResponseData struct {
 	Message string `json:"message"`
 }
 
-func TestHelloWorldSuccess(t *testing.T) {
+func (suite *IntegrationSuite) TestHelloWorldSuccess() {
+	t := suite.T()
+
 	resp := Request("GET", "/", nil)
 
 	assert.Equal(t, 200, resp.StatusCode)
