@@ -16,11 +16,5 @@ jobs:
       - name: Tidy Up
         run: go mod tidy
 
-      - name: Install Dependencies
-        run: go get ./...
-
-      - name: Build
-        run: go build -v ./...
-
       - name: Unit Tests
         run: go test ./... -v --short
