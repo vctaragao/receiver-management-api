@@ -6,3 +6,6 @@ test:
 
 container:
 	docker exec -it receiver-management-api bash
+
+unit-test:
+	go test ./... -v --short
