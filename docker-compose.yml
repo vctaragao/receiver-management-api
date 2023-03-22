@@ -11,7 +11,20 @@ services:
       DB_NAME: receiver-management
       DB_PASSWORD: test
       DB_PORT: 5432
+      APP_ENV: dev
     ports:
       - "1323:1323"
     volumes:
       - .:/user/src/app
+    depends_on:
+      - db
+  db:
+    container_name: receiver-management-db
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_DB: receiver-management
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"

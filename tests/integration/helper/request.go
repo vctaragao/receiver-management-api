@@ -1,4 +1,4 @@
-package integration
+package helper
 
 import (
 	"bytes"
@@ -9,12 +9,12 @@ import (
 	"net/http/httptest"
 
 	"github.com/labstack/echo/v4"
-	"github.com/vctaragao/receiver-management-api/api/http"
 )
 
-func Request(method, uri string, reqBody []byte) *net_http.Response {
-	initApp()
+type Helper struct {
+}
 
+func (Helper) Request(method, uri string, reqBody []byte) *net_http.Response {
 	req := createRequest(method, uri, reqBody)
 	client := &net_http.Client{}
 	resp, err := client.Do(req)
@@ -27,14 +27,6 @@ func Request(method, uri string, reqBody []byte) *net_http.Response {
 	return resp
 }
 
-func initApp() {
-	e := echo.New()
-
-	http.RegisterRouter(e)
-
-	go startServer(e)
-}
-
 func createRequest(method, uri string, reqBody []byte) *net_http.Request {
 	req := httptest.NewRequest(method, "http://localhost:1323"+uri, bytes.NewBuffer(reqBody))
 	req.RequestURI = ""
@@ -43,11 +35,7 @@ func createRequest(method, uri string, reqBody []byte) *net_http.Request {
 	return req
 }
 
-func startServer(e *echo.Echo) {
-	go e.Logger.Fatal(e.Start(":1323"))
-}
-
-func DecodeBody(resp *net_http.Response, dto interface{}) error {
+func (Helper) DecodeBody(resp *net_http.Response, dto interface{}) error {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
@@ -56,7 +44,6 @@ func DecodeBody(resp *net_http.Response, dto interface{}) error {
 	defer resp.Body.Close()
 
 	err = json.Unmarshal(body, &dto)
-
 	if err != nil {
 		return err
 	}
