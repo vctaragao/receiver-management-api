@@ -11,9 +11,9 @@ type ReceiverManagement struct {
 	Repo *entity.Repository
 }
 
-func NewReceiverManagement(repo *entity.Repository) *ReceiverManagement {
+func NewReceiverManagement(repo entity.Repository) *ReceiverManagement {
 	return &ReceiverManagement{
-		Repo: repo,
+		Repo: &repo,
 	}
 }
 

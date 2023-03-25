@@ -33,7 +33,7 @@ func (s *IntegrationSuite) startRepo() entity.Repository {
 }
 
 func initApp(repo entity.Repository) {
-	rm := application.NewReceiverManagement(&repo)
+	rm := application.NewReceiverManagement(repo)
 
 	e := echo.New()
 	http.RegisterRouter(e, rm)
