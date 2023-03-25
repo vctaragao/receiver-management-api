@@ -1,8 +1,6 @@
 package application
 
 import (
-	"errors"
-
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/create_receiver"
 )
@@ -33,10 +31,5 @@ func (rm *ReceiverManagement) Create(corporateName, cpf, cnpj, email, pixType, p
 }
 
 func (rm *ReceiverManagement) IsCreateBussinesLogicError(err error) bool {
-	for _, t := range create_receiver.GetBussinesLogicErrors() {
-		if errors.As(err, &t) {
-			return true
-		}
-	}
-	return false
+	return create_receiver.IsCreateBussinesLogicError(err)
 }

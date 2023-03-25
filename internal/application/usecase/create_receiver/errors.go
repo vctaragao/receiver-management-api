@@ -1,6 +1,7 @@
 package create_receiver
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -41,6 +42,10 @@ func (e *CreatingPixErr) Error() string {
 	return fmt.Sprintf("creating pix: %v", e.err)
 }
 
-func GetBussinesLogicErrors() []interface{} {
-	return []interface{}{cPixErr, cReceiverErr}
+func IsCreateBussinesLogicError(err error) bool {
+	if errors.As(err, &cPixErr) || errors.As(err, &cReceiverErr) {
+		return true
+	}
+
+	return false
 }
