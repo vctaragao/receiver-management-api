@@ -62,3 +62,21 @@ func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 
 	return r, nil
 }
+
+func (postgres *Postgress) AddPix(receiverId uint, p *entity.Pix) (*entity.Pix, error) {
+	pix := schemas.Pix{
+		Type:       p.Type,
+		Key:        p.Key,
+		ReceiverId: receiverId,
+	}
+
+	result := postgres.Db.Create(&pix)
+
+	if result.Error != nil {
+		return &entity.Pix{}, ErrUnableToInsert
+	}
+
+	p.Id = pix.ID
+
+	return p, nil
+}
