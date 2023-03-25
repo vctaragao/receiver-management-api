@@ -20,10 +20,10 @@ type MockRepo struct {
 	mock.Mock
 }
 
-func (mr *MockRepo) AddReceiver(r *entity.Receiver) error {
+func (mr *MockRepo) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	args := mr.Called(r)
 	r.Id = 1
-	return args.Error(0)
+	return args.Get(0).(*entity.Receiver), args.Error(1)
 }
 
 var testCases = []testCase{

@@ -34,16 +34,16 @@ func NewPostgress() *Postgress {
 	db.AutoMigrate(&schemas.Receiver{})
 	db.AutoMigrate(&schemas.Pix{})
 
-	// if os.Getenv("APP_ENV") == "test" {
-	// 	db = db.Begin()
-	// }
+	if os.Getenv("APP_ENV") == "test" {
+		db = db.Begin()
+	}
 
 	return &Postgress{
 		Db: db,
 	}
 }
 
-func (p *Postgress) AddReceiver(r *entity.Receiver) error {
+func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := schemas.Receiver{
 		RazaoSocial: r.CorporateName,
 		Cpf:         r.Cpf,
@@ -55,10 +55,10 @@ func (p *Postgress) AddReceiver(r *entity.Receiver) error {
 	result := p.Db.Create(&receiver)
 
 	if result.Error != nil {
-		return ErrUnableToInsert
+		return &entity.Receiver{}, ErrUnableToInsert
 	}
 
 	r.Id = receiver.ID
 
-	return nil
+	return r, nil
 }

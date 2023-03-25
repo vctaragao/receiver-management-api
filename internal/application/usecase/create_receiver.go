@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 )
@@ -20,14 +19,13 @@ type CreateOutputDto struct {
 }
 
 func Create(dto *CreateInputDto, repo entity.Repository) (*CreateOutputDto, error) {
-	receiver, err := entity.NewReceiver(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email, entity.STATUS_DRAFT)
-
+	receiver := entity.NewReceiver(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email, entity.STATUS_DRAFT)
+	err := receiver.Validate()
 	if err != nil {
-		fmt.Println(err.Error())
 		return &CreateOutputDto{}, err
 	}
 
-	err = repo.AddReceiver(receiver)
+	receiver, err = repo.AddReceiver(receiver)
 
 	if err != nil {
 		return &CreateOutputDto{}, errors.New("unable to create receiver")
