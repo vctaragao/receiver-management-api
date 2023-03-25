@@ -15,7 +15,7 @@ func (c *Create) Execute(dto *InputDto) (*OutputDto, error) {
 		return returnError(&CreatingReceiverErr{err: err})
 	}
 
-	pix := entity.NewPix(dto.Pix_type, dto.Pix_key)
+	pix := entity.NewPix(dto.PixType, dto.PixKey)
 
 	if err := pix.Validate(); err != nil {
 		return returnError(&CreatingPixErr{err: err})
@@ -23,7 +23,7 @@ func (c *Create) Execute(dto *InputDto) (*OutputDto, error) {
 
 	receiver, err := c.Repo.AddReceiver(receiver)
 	if err != nil {
-		return returnError(&SaveReceiverErr{err: err})
+		return returnError(&saveReceiverErr{err: err})
 	}
 
 	_, err = c.Repo.AddPix(receiver.Id, pix)

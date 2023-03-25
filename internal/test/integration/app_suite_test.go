@@ -1,7 +1,6 @@
 package integration
 
 import (
-	"os"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -21,16 +20,20 @@ type IntegrationSuite struct {
 }
 
 func (s *IntegrationSuite) SetupSuite() {
-	os.Setenv("APP_ENV", "test")
+	initApp(s.startRepo())
+}
 
+func (s *IntegrationSuite) startRepo() entity.Repository {
 	repo := storage.NewPostgress()
-	s.db = repo.Db
+	repo.Db = repo.Db.Begin()
+	repo.Db.SavePoint("init")
 
-	initApp(repo)
+	s.db = repo.Db
+	return repo
 }
 
 func initApp(repo entity.Repository) {
-	rm := application.NewReceiverManagement(repo)
+	rm := application.NewReceiverManagement(&repo)
 
 	e := echo.New()
 	http.RegisterRouter(e, rm)
@@ -43,11 +46,15 @@ func startServer(e *echo.Echo) {
 }
 
 func (s *IntegrationSuite) TearDownTest() {
-	s.db.Rollback()
+	s.db.RollbackTo("init")
+}
+
+func (s *IntegrationSuite) firstInDatabase(schema interface{}, expectedFields map[string]interface{}) {
+	s.db.Where(expectedFields).First(schema)
 }
 
 func (s *IntegrationSuite) findInDatabase(schema interface{}, expectedFields map[string]interface{}) {
-	s.db.Where(expectedFields).First(schema)
+	s.db.Where(expectedFields).Find(&schema)
 }
 
 func TestIntegrationSuite(t *testing.T) {

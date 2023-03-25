@@ -42,8 +42,6 @@ func (Helper) DecodeBody(resp *net_http.Response, dto interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(string(body))
-
 	err = json.Unmarshal(body, &dto)
 	if err != nil {
 		return err

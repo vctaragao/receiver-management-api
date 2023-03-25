@@ -9,11 +9,6 @@ import (
 	"github.com/vctaragao/receiver-management-api/internal/test/mocks"
 )
 
-var savingPixErr *SavingPixErr
-var creatingPixErr *CreatingPixErr
-var saveReceiverErr *SaveReceiverErr
-var creatingReceiverErr *CreatingReceiverErr
-
 type testCase struct {
 	description string
 	input       *InputDto
@@ -26,8 +21,8 @@ var inputDto = InputDto{
 	Cpf:           "009.016.853-48",
 	Cnpj:          "",
 	Email:         "laranataliaalmeida@chavao.com.br",
-	Pix_type:      "CPF",
-	Pix_key:       "009.016.853-48",
+	PixType:       "CPF",
+	PixKey:        "009.016.853-48",
 }
 
 var testCases = []testCase{
@@ -47,11 +42,11 @@ var testCases = []testCase{
 			Cpf:           inputDto.Cpf,
 			Cnpj:          inputDto.Cnpj,
 			Email:         "laranataliaalmeidachavao.com.br",
-			Pix_type:      inputDto.Pix_type,
-			Pix_key:       inputDto.Pix_key,
+			PixType:       inputDto.PixType,
+			PixKey:        inputDto.PixKey,
 		},
 		output: &OutputDto{},
-		err:    creatingReceiverErr,
+		err:    cReceiverErr,
 	},
 	{
 		description: "if an error accour on validating the pix return error",
@@ -60,23 +55,23 @@ var testCases = []testCase{
 			Cpf:           inputDto.Cpf,
 			Cnpj:          inputDto.Cnpj,
 			Email:         inputDto.Email,
-			Pix_type:      "invalidType",
-			Pix_key:       inputDto.Pix_key,
+			PixType:       "invalidType",
+			PixKey:        inputDto.PixKey,
 		},
 		output: &OutputDto{},
-		err:    creatingPixErr,
+		err:    cPixErr,
 	},
 	{
 		description: "if an error accour on saving the receiver return error",
 		input:       &inputDto,
 		output:      &OutputDto{},
-		err:         saveReceiverErr,
+		err:         sReceiverErr,
 	},
 	{
 		description: "if an error accour on saving the pix return error",
 		input:       &inputDto,
 		output:      &OutputDto{},
-		err:         savingPixErr,
+		err:         sPixErr,
 	},
 }
 
@@ -116,7 +111,7 @@ func setAddReceiverExpectation(tc testCase, repo *mocks.MockRepo) uint {
 
 	err := errors.New("error")
 
-	if tc.err == nil || !errors.As(tc.err, &saveReceiverErr) {
+	if tc.err == nil || !errors.As(tc.err, &sReceiverErr) {
 		err = nil
 	}
 
@@ -126,13 +121,13 @@ func setAddReceiverExpectation(tc testCase, repo *mocks.MockRepo) uint {
 }
 
 func setAddPixExpectation(receiverId uint, tc testCase, repo *mocks.MockRepo) {
-	pix_param := entity.NewPix(tc.input.Pix_type, tc.input.Pix_key)
+	pix_param := entity.NewPix(tc.input.PixType, tc.input.PixKey)
 	pix_return := *pix_param
 	pix_return.Id = 1
 
 	err := errors.New("error")
 
-	if tc.err == nil || !errors.As(tc.err, &savingPixErr) {
+	if tc.err == nil || !errors.As(tc.err, &sPixErr) {
 		err = nil
 	}
 

@@ -34,10 +34,6 @@ func NewPostgress() *Postgress {
 	db.AutoMigrate(&schemas.Receiver{})
 	db.AutoMigrate(&schemas.Pix{})
 
-	if os.Getenv("APP_ENV") == "test" {
-		db = db.Begin()
-	}
-
 	return &Postgress{
 		Db: db,
 	}
@@ -45,11 +41,11 @@ func NewPostgress() *Postgress {
 
 func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := schemas.Receiver{
-		RazaoSocial: r.CorporateName,
-		Cpf:         r.Cpf,
-		Cnpj:        r.Cnpj,
-		Email:       r.Email,
-		Status:      r.Status,
+		CorporateName: r.CorporateName,
+		Cpf:           r.Cpf,
+		Cnpj:          r.Cnpj,
+		Email:         r.Email,
+		Status:        r.Status,
 	}
 
 	result := p.Db.Create(&receiver)

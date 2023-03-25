@@ -5,8 +5,8 @@ type InputDto struct {
 	Cpf           string
 	Cnpj          string
 	Email         string
-	Pix_type      string
-	Pix_key       string
+	PixType       string
+	PixKey        string
 }
 
 type OutputDto struct {
