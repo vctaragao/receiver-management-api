@@ -12,6 +12,12 @@ const (
 	MAX_EMAIL_LENGTH = 250
 )
 
+var ErrInvalidCpf = errors.New("invalid cpf")
+var ErrInvalidCnpj = errors.New("invalid cnpj")
+var ErrInvalidEmail = errors.New("invalid email")
+var ErrInvalidStatus = errors.New("invalid status")
+var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
+
 type Receiver struct {
 	Id            uint
 	CorporateName string
@@ -19,54 +25,43 @@ type Receiver struct {
 	Cnpj          string
 	Email         string
 	Status        string
-	Pix           Pix
 }
 
-func NewReceiver(corporateName, cpf, cnpj, email, status string) (*Receiver, error) {
-	r := &Receiver{
+func NewReceiver(corporateName, cpf, cnpj, email, status string) *Receiver {
+	return &Receiver{
 		CorporateName: corporateName,
 		Cpf:           cpf,
 		Cnpj:          cnpj,
 		Email:         email,
 		Status:        status,
 	}
-
-	if err := r.isValid(); err != nil {
-		return &Receiver{}, err
-	}
-
-	return r, nil
 }
 
-func (r *Receiver) isValid() error {
-	if r.CorporateName == "" {
-		return errors.New("invalid corporate name")
-	}
-
-	if r.Cpf != "" && r.Cnpj != "" {
-		return errors.New("receiver can only be PF or PJ")
+func (r *Receiver) Validate() error {
+	if len(r.CorporateName) < 2 {
+		return ErrInvalidCorporateName
 	}
 
 	if r.Cpf != "" && !helper.IsValidCpf(r.Cpf) {
-		return errors.New("invalid cpf")
+		return ErrInvalidCpf
 	}
 
 	if r.Cnpj != "" && !helper.IsValidCnpj(r.Cnpj) {
-		return errors.New("invalid cnpj")
+		return ErrInvalidCnpj
 	}
 
-	if r.Email != "" && !r.isValidEmail() {
-		return errors.New("invalid email")
+	if r.Email != "" && !r.hasValidEmail() {
+		return ErrInvalidEmail
 	}
 
-	if r.Status != "" && !r.isValidStatus() {
-		return errors.New("invalid status")
+	if r.Status != "" && !r.hasValidStatus() {
+		return ErrInvalidStatus
 	}
 
 	return nil
 }
 
-func (r *Receiver) isValidEmail() bool {
+func (r *Receiver) hasValidEmail() bool {
 	if !helper.IsValidEmail(r.Email) || len(r.Email) > MAX_EMAIL_LENGTH {
 		return false
 	}
@@ -74,7 +69,7 @@ func (r *Receiver) isValidEmail() bool {
 	return true
 }
 
-func (r *Receiver) isValidStatus() bool {
+func (r *Receiver) hasValidStatus() bool {
 	for _, status := range GetValidReciverStatus() {
 		if status == r.Status {
 			return true

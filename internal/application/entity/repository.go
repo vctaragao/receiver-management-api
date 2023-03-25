@@ -1,5 +1,5 @@
 package entity
 
 type Repository interface {
-	AddReceiver(r *Receiver) error
+	AddReceiver(r *Receiver) (*Receiver, error)
 }

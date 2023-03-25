@@ -15,31 +15,29 @@ const (
 	MAX_LENGTH_KEY = 140
 )
 
+var ErrInvalidKey = errors.New("invalid key")
+var ErrInvalidType = errors.New("invalid type")
+
 type Pix struct {
+	Id   uint
 	Type string
 	Key  string
 }
 
-func NewPix(t, key string) (*Pix, error) {
-	p := &Pix{
+func NewPix(t, key string) *Pix {
+	return &Pix{
 		Type: t,
 		Key:  key,
 	}
-
-	if err := p.isValid(); err != nil {
-		return &Pix{}, err
-	}
-
-	return p, nil
 }
 
-func (p *Pix) isValid() error {
+func (p *Pix) Validate() error {
 	if !p.isValidType() {
-		return errors.New("invalid type")
+		return ErrInvalidType
 	}
 
 	if p.Key == "" || len(p.Key) > MAX_LENGTH_KEY || !p.isValidKey() {
-		return errors.New("invalid key")
+		return ErrInvalidKey
 	}
 
 	return nil
@@ -60,7 +58,7 @@ func (p *Pix) isValidKey() bool {
 
 	switch p.Type {
 	case CPF:
-		result = helper.IsValidCnpj(p.Key)
+		result = helper.IsValidCpf(p.Key)
 	case CNPJ:
 		result = helper.IsValidCnpj(p.Key)
 	case EMAIL:
