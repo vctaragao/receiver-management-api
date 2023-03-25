@@ -10,7 +10,7 @@ import (
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/http"
 	"github.com/vctaragao/receiver-management-api/internal/storage"
-	"github.com/vctaragao/receiver-management-api/tests/integration/helper"
+	"github.com/vctaragao/receiver-management-api/internal/test/integration/helper"
 	"gorm.io/gorm"
 )
 
@@ -43,7 +43,7 @@ func startServer(e *echo.Echo) {
 }
 
 func (s *IntegrationSuite) TearDownTest() {
-	// s.db.Rollback()
+	s.db.Rollback()
 }
 
 func (s *IntegrationSuite) findInDatabase(schema interface{}, expectedFields map[string]interface{}) {
