@@ -22,7 +22,6 @@ type MockRepo struct {
 
 func (mr *MockRepo) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	args := mr.Called(r)
-	r.Id = 1
 	return args.Get(0).(*entity.Receiver), args.Error(1)
 }
 
@@ -80,6 +79,9 @@ func TestCreateReceiver(t *testing.T) {
 
 func setupMock(tc testCase) *MockRepo {
 	repo := &MockRepo{}
-	repo.On("AddReceiver", mock.Anything).Return(tc.err)
+	receiver_param := entity.NewReceiver(tc.input.CorporateName, tc.input.Cpf, tc.input.Cnpj, tc.input.Email, entity.STATUS_DRAFT)
+	receiver_return := *receiver_param
+	receiver_return.Id = 1
+	repo.On("AddReceiver", receiver_param).Return(&receiver_return, tc.err)
 	return repo
 }
