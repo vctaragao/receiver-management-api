@@ -42,8 +42,7 @@ func NewPostgress() *Postgress {
 func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := schemas.Receiver{
 		CorporateName: r.CorporateName,
-		Cpf:           r.Cpf,
-		Cnpj:          r.Cnpj,
+		CpfCnpj:       r.CpfCnpj,
 		Email:         r.Email,
 		Status:        r.Status,
 	}

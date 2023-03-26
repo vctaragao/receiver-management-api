@@ -9,8 +9,7 @@ import (
 
 type ReceiverInputDto struct {
 	CorporateName string `json:"razao_social"`
-	Cpf           string `json:"cpf"`
-	Cnpj          string `json:"cnpj"`
+	CpfCnpj       string `json:"cpf_cnpj"`
 	Email         string `json:"email"`
 	PixType       string `json:"pix_type"`
 	PixKey        string `json:"pix_key"`
@@ -33,7 +32,7 @@ func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 			return err
 		}
 
-		resultDto, err := rm.Create(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email, dto.PixType, dto.PixKey)
+		resultDto, err := rm.Create(dto.CorporateName, dto.CpfCnpj, dto.Email, dto.PixType, dto.PixKey)
 
 		if err != nil {
 			returnError(ctx, rm, err)
