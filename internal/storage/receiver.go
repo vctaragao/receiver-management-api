@@ -9,8 +9,7 @@ import (
 func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := schemas.Receiver{
 		CorporateName: r.CorporateName,
-		Cpf:           r.Cpf,
-		Cnpj:          r.Cnpj,
+		CpfCnpj:       r.CpfCnpj,
 		Email:         r.Email,
 		Status:        r.Status,
 	}
@@ -34,11 +33,10 @@ func (postgress *Postgress) GetReceiverWithPix(receiverId uint) (*entity.Receive
 	}
 
 	r := &entity.Receiver{
-		Id:     receiverId,
-		Cpf:    receiver.Cpf,
-		Cnpj:   receiver.Cnpj,
-		Email:  receiver.Email,
-		Status: receiver.Status,
+		Id:      receiverId,
+		CpfCnpj: receiver.CpfCnpj,
+		Email:   receiver.Email,
+		Status:  receiver.Status,
 	}
 
 	p := &entity.Pix{
@@ -53,8 +51,7 @@ func (postgress *Postgress) GetReceiverWithPix(receiverId uint) (*entity.Receive
 func (postgress *Postgress) UpdateReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := &schemas.Receiver{
 		CorporateName: r.CorporateName,
-		Cpf:           r.Cpf,
-		Cnpj:          r.Cnpj,
+		CpfCnpj:       r.CpfCnpj,
 		Email:         r.Email,
 		Status:        r.Status,
 		Model:         gorm.Model{ID: r.Id},

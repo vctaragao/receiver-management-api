@@ -9,7 +9,7 @@ type Create struct {
 }
 
 func (c *Create) Execute(dto *InputDto) (*OutputDto, error) {
-	receiver := entity.NewReceiver(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email, entity.STATUS_DRAFT)
+	receiver := entity.NewReceiver(dto.CorporateName, dto.CpfCnpj, dto.Email, entity.STATUS_DRAFT)
 
 	if err := receiver.Validate(); err != nil {
 		return returnError(&CreatingReceiverErr{err: err})

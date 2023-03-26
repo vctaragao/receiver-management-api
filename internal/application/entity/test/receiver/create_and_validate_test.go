@@ -10,8 +10,7 @@ import (
 type createTestCase struct {
 	description   string
 	corporateName string
-	cpf           string
-	cnpj          string
+	cpfCnpj       string
 	email         string
 	status        string
 	expected      *entity.Receiver
@@ -22,7 +21,7 @@ func TestCreateAndValidateNewReceiver(t *testing.T) {
 	for _, tc := range getCreateAndValidateTestCases() {
 		t.Run(tc.description, func(t *testing.T) {
 
-			receiver := entity.NewReceiver(tc.corporateName, tc.cpf, tc.cnpj, tc.email, tc.status)
+			receiver := entity.NewReceiver(tc.corporateName, tc.cpfCnpj, tc.email, tc.status)
 			err := receiver.Validate()
 
 			if tc.err != nil {
@@ -38,8 +37,7 @@ func TestCreateAndValidateNewReceiver(t *testing.T) {
 func getCreateAndValidateTestCases() []createTestCase {
 	r := entity.Receiver{
 		CorporateName: "Clarice Rayssa Tereza Assunção",
-		Cpf:           "428.639.342-95",
-		Cnpj:          "85.980.829/0001-50",
+		CpfCnpj:       "428.639.342-95",
 		Email:         "claricerayssaassuncao@muvacademia.com.br",
 		Status:        "RASCUNHO",
 	}
@@ -48,8 +46,7 @@ func getCreateAndValidateTestCases() []createTestCase {
 		{
 			description:   "given valid data return a valid receiver",
 			corporateName: r.CorporateName,
-			cpf:           r.Cpf,
-			cnpj:          r.Cnpj,
+			cpfCnpj:       r.CpfCnpj,
 			email:         r.Email,
 			status:        r.Status,
 			expected:      &r,
@@ -58,8 +55,7 @@ func getCreateAndValidateTestCases() []createTestCase {
 		{
 			description:   "given invalid coporate name return an error",
 			corporateName: "",
-			cpf:           r.Cpf,
-			cnpj:          r.Cnpj,
+			cpfCnpj:       r.CpfCnpj,
 			email:         r.Email,
 			status:        r.Status,
 			expected:      nil,
@@ -68,8 +64,7 @@ func getCreateAndValidateTestCases() []createTestCase {
 		{
 			description:   "given invalid coporate name return an error",
 			corporateName: "a",
-			cpf:           r.Cpf,
-			cnpj:          r.Cnpj,
+			cpfCnpj:       r.CpfCnpj,
 			email:         r.Email,
 			status:        r.Status,
 			expected:      nil,
@@ -78,28 +73,25 @@ func getCreateAndValidateTestCases() []createTestCase {
 		{
 			description:   "given invalid cpf return an error",
 			corporateName: r.CorporateName,
-			cpf:           "219.334.250-4",
-			cnpj:          r.Cnpj,
+			cpfCnpj:       "219.334.250-4",
 			email:         r.Email,
 			status:        r.Status,
 			expected:      nil,
-			err:           entity.ErrInvalidCpf,
+			err:           entity.ErrInvalidCpfCnpj,
 		},
 		{
 			description:   "given invalid cnpj return an error",
 			corporateName: r.CorporateName,
-			cpf:           r.Cpf,
-			cnpj:          "15.663.178/0001-0",
+			cpfCnpj:       "15.663.178/0001-0",
 			email:         r.Email,
 			status:        r.Status,
 			expected:      nil,
-			err:           entity.ErrInvalidCnpj,
+			err:           entity.ErrInvalidCpfCnpj,
 		},
 		{
 			description:   "given invalid email return an error",
 			corporateName: r.CorporateName,
-			cpf:           r.Cpf,
-			cnpj:          r.Cnpj,
+			cpfCnpj:       r.CpfCnpj,
 			email:         "claricerayssaassuncaomuvacademia.com.br",
 			status:        r.Status,
 			expected:      nil,
@@ -108,8 +100,7 @@ func getCreateAndValidateTestCases() []createTestCase {
 		{
 			description:   "given invalid status return an error",
 			corporateName: r.CorporateName,
-			cpf:           r.Cpf,
-			cnpj:          r.Cnpj,
+			cpfCnpj:       r.CpfCnpj,
 			email:         r.Email,
 			status:        "Status inválido",
 			expected:      nil,

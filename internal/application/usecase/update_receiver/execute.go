@@ -31,7 +31,7 @@ func (u *Update) Execute(dto *InputDto) (*OutputDto, error) {
 }
 
 func (u *Update) updateReciver(receiver *entity.Receiver, dto *InputDto) error {
-	if err := receiver.Update(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email); err != nil {
+	if err := receiver.Update(dto.CorporateName, dto.CpfCnpj, dto.Email); err != nil {
 		return &UpdatingReceiverErr{err: err}
 	}
 

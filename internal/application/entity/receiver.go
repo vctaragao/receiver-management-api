@@ -12,27 +12,24 @@ const (
 	MAX_EMAIL_LENGTH = 250
 )
 
-var ErrInvalidCpf = errors.New("invalid cpf")
-var ErrInvalidCnpj = errors.New("invalid cnpj")
 var ErrInvalidEmail = errors.New("invalid email")
 var ErrInvalidStatus = errors.New("invalid status")
+var ErrInvalidCpfCnpj = errors.New("invalid cpf or cnpj")
 var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
 var ErrCanOlyUpdateEmailOnValidatedReceiver = errors.New("can only update email on validated recever")
 
 type Receiver struct {
 	Id            uint
 	CorporateName string
-	Cpf           string
-	Cnpj          string
+	CpfCnpj       string
 	Email         string
 	Status        string
 }
 
-func NewReceiver(corporateName, cpf, cnpj, email, status string) *Receiver {
+func NewReceiver(corporateName, cpfCnpj, email, status string) *Receiver {
 	return &Receiver{
 		CorporateName: corporateName,
-		Cpf:           cpf,
-		Cnpj:          cnpj,
+		CpfCnpj:       cpfCnpj,
 		Email:         email,
 		Status:        status,
 	}
@@ -43,12 +40,8 @@ func (r *Receiver) Validate() error {
 		return ErrInvalidCorporateName
 	}
 
-	if r.Cpf != "" && !helper.IsValidCpf(r.Cpf) {
-		return ErrInvalidCpf
-	}
-
-	if r.Cnpj != "" && !helper.IsValidCnpj(r.Cnpj) {
-		return ErrInvalidCnpj
+	if r.CpfCnpj != "" && !helper.IsValidCpf(r.CpfCnpj) && !helper.IsValidCnpj(r.CpfCnpj) {
+		return ErrInvalidCpfCnpj
 	}
 
 	if r.Email != "" && !r.hasValidEmail() {
@@ -84,8 +77,8 @@ func GetValidReciverStatus() []string {
 	return []string{STATUS_DRAFT, STATUS_VALID}
 }
 
-func (r *Receiver) Update(corporateName, cpf, cnpj, email string) error {
-	if !r.canUpdate(corporateName, cpf, cnpj) {
+func (r *Receiver) Update(corporateName, cpfCnpj, email string) error {
+	if !r.canUpdate(corporateName, cpfCnpj) {
 		return ErrCanOlyUpdateEmailOnValidatedReceiver
 	}
 
@@ -93,12 +86,8 @@ func (r *Receiver) Update(corporateName, cpf, cnpj, email string) error {
 		r.CorporateName = corporateName
 	}
 
-	if cpf != "" {
-		r.Cpf = cpf
-	}
-
-	if cnpj != "" {
-		r.Cnpj = cnpj
+	if cpfCnpj != "" {
+		r.CpfCnpj = cpfCnpj
 	}
 
 	if email != "" {
@@ -108,12 +97,12 @@ func (r *Receiver) Update(corporateName, cpf, cnpj, email string) error {
 	return nil
 }
 
-func (r *Receiver) canUpdate(corporateName, cpf, cnpj string) bool {
+func (r *Receiver) canUpdate(corporateName, cpfCnpj string) bool {
 	if r.Status == STATUS_DRAFT {
 		return true
 	}
 
-	if corporateName != "" || cpf != "" || cnpj != "" {
+	if corporateName != "" || cpfCnpj != "" {
 		return false
 	}
 
