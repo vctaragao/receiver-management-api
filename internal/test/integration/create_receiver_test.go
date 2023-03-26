@@ -13,12 +13,12 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 	t := s.T()
 
 	params := http.ReceiverInputDto{
-		RazaoSocial: "Nome",
-		Cpf:         "041.485.353-92",
-		Cnpj:        "",
-		Email:       "bryan_barbosa@prcondominios.com.br",
-		PixType:     "CPF",
-		PixKey:      "041.485.353-92",
+		CorporateName: "Nome",
+		Cpf:           "041.485.353-92",
+		Cnpj:          "",
+		Email:         "bryan_barbosa@prcondominios.com.br",
+		PixType:       "CPF",
+		PixKey:        "041.485.353-92",
 	}
 
 	reqBody, _ := json.Marshal(params)
@@ -36,7 +36,7 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 	receiver := &schemas.Receiver{}
 	s.firstInDatabase(receiver, map[string]interface{}{
 		"id":             result.Id,
-		"corporate_name": params.RazaoSocial,
+		"corporate_name": params.CorporateName,
 		"cpf":            params.Cpf,
 		"cnpj":           params.Cnpj,
 		"email":          params.Email,
@@ -44,6 +44,10 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 	})
 
 	assert.Equal(t, result.Id, receiver.ID)
+	assert.Equal(t, result.ReceiverInputDto.Cpf, receiver.Cpf)
+	assert.Equal(t, result.ReceiverInputDto.Cnpj, receiver.Cnpj)
+	assert.Equal(t, result.ReceiverInputDto.Email, receiver.Email)
+	assert.Equal(t, result.ReceiverInputDto.CorporateName, receiver.CorporateName)
 
 	pix := &schemas.Pix{}
 	s.firstInDatabase(pix, map[string]interface{}{
@@ -51,18 +55,22 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 		"key":         params.PixKey,
 		"receiver_id": result.Id,
 	})
+
+	assert.Equal(t, result.Id, receiver.ID)
+	assert.Equal(t, result.ReceiverInputDto.PixType, pix.Type)
+	assert.Equal(t, result.ReceiverInputDto.PixKey, pix.Key)
 }
 
 func (s *IntegrationSuite) TestCreateReceiverIntegrationBadResponse() {
 	t := s.T()
 
 	params := http.ReceiverInputDto{
-		RazaoSocial: "Nome",
-		Cpf:         "041.485.353",
-		Cnpj:        "",
-		Email:       "bryan_barbosa@prcondominios.com.br",
-		PixType:     "CPF",
-		PixKey:      "041.485.353-92",
+		CorporateName: "Nome",
+		Cpf:           "041.485.353",
+		Cnpj:          "",
+		Email:         "bryan_barbosa@prcondominios.com.br",
+		PixType:       "CPF",
+		PixKey:        "041.485.353-92",
 	}
 
 	reqBody, _ := json.Marshal(params)
@@ -79,7 +87,7 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationBadResponse() {
 
 	receivers := []schemas.Receiver{}
 	s.findInDatabase(receivers, map[string]interface{}{
-		"corporate_name": params.RazaoSocial,
+		"corporate_name": params.CorporateName,
 		"cpf":            params.Cpf,
 		"cnpj":           params.Cnpj,
 		"email":          params.Email,

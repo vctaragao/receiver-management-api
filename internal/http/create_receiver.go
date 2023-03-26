@@ -8,16 +8,17 @@ import (
 )
 
 type ReceiverInputDto struct {
-	RazaoSocial string `json:"razao_social"`
-	Cpf         string `json:"cpf"`
-	Cnpj        string `json:"cnpj"`
-	Email       string `json:"email"`
-	PixType     string `json:"pix_type"`
-	PixKey      string `json:"pix_key"`
+	CorporateName string `json:"razao_social"`
+	Cpf           string `json:"cpf"`
+	Cnpj          string `json:"cnpj"`
+	Email         string `json:"email"`
+	PixType       string `json:"pix_type"`
+	PixKey        string `json:"pix_key"`
 }
 
 type ReceiverOutputDto struct {
 	Id uint `json:"recebedor_id"`
+	ReceiverInputDto
 }
 
 type ErrorOutputDto struct {
@@ -32,14 +33,14 @@ func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 			return err
 		}
 
-		resultDto, err := rm.Create(dto.RazaoSocial, dto.Cpf, dto.Cnpj, dto.Email, dto.PixType, dto.PixKey)
+		resultDto, err := rm.Create(dto.CorporateName, dto.Cpf, dto.Cnpj, dto.Email, dto.PixType, dto.PixKey)
 
 		if err != nil {
 			returnError(ctx, rm, err)
 			return nil
 		}
 
-		return ctx.JSON(http.StatusOK, &ReceiverOutputDto{Id: resultDto.Id})
+		return ctx.JSON(http.StatusOK, &ReceiverOutputDto{Id: resultDto.Id, ReceiverInputDto: *dto})
 	}
 }
 
