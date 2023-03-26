@@ -33,27 +33,57 @@ func TestUpdateReceiver(t *testing.T) {
 }
 
 func getUpdateTestCasesSuccess() []updateTestCase {
-	r := entity.Receiver{
+	receiver := entity.Receiver{
 		CorporateName: "Clarice Rayssa Tereza Assunção",
 		CpfCnpj:       "428.639.342-95",
 		Email:         "claricerayssaassuncao@muvacademia.com.br",
-		Status:        "RASCUNHO",
+		Status:        entity.STATUS_DRAFT,
+	}
+
+	validatedReceiver := entity.Receiver{
+		CorporateName: "Leonardo e Geraldo Pães e Doces Ltda",
+		CpfCnpj:       "32.651.546/0001-07",
+		Email:         "representantes@leonardoegeraldopaesedocesltda.com.br",
+		Status:        entity.STATUS_VALID,
 	}
 
 	return []updateTestCase{
 		{
 			description:   "given valid data update receiver",
-			receiver:      r,
-			corporateName: "Valid name",
-			cpfCnpj:       r.CpfCnpj,
-			email:         r.Email,
+			receiver:      receiver,
+			corporateName: "Bryan e Sophie Ferragens Ltda",
+			cpfCnpj:       "13.992.684/0001-05",
+			email:         "estoque@bryanesophieferragensltda.com.br",
 			expected: entity.Receiver{
-				CorporateName: "Valid name",
-				CpfCnpj:       r.CpfCnpj,
-				Email:         r.Email,
-				Status:        r.Status,
+				CorporateName: "Bryan e Sophie Ferragens Ltda",
+				CpfCnpj:       "13.992.684/0001-05",
+				Email:         "estoque@bryanesophieferragensltda.com.br",
+				Status:        receiver.Status,
 			},
 			err: nil,
+		},
+		{
+			description:   "given receiver in validated status update email",
+			receiver:      validatedReceiver,
+			corporateName: "",
+			cpfCnpj:       "",
+			email:         "marketing@tiagoeflaviamarcenariame.com.br",
+			expected: entity.Receiver{
+				CorporateName: validatedReceiver.CorporateName,
+				CpfCnpj:       validatedReceiver.CpfCnpj,
+				Email:         "marketing@tiagoeflaviamarcenariame.com.br",
+				Status:        validatedReceiver.Status,
+			},
+			err: nil,
+		},
+		{
+			description:   "given receiver in validated status dont update when try to update other fields than email",
+			receiver:      validatedReceiver,
+			corporateName: "Kevin e Isaac Consultoria Financeira Ltda",
+			cpfCnpj:       "06.699.980/0001-49",
+			email:         "marketing@tiagoeflaviamarcenariame.com.br",
+			expected:      validatedReceiver,
+			err:           entity.ErrCanOlyUpdateEmailOnValidatedReceiver,
 		},
 	}
 }

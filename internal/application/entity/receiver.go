@@ -16,7 +16,7 @@ var ErrInvalidEmail = errors.New("invalid email")
 var ErrInvalidStatus = errors.New("invalid status")
 var ErrInvalidCpfCnpj = errors.New("invalid cpf or cnpj")
 var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
-var ErrCanOlyUpdateEmailOnValidatedReceiver = errors.New("can only update email on validated recever")
+var ErrCanOlyUpdateEmailOnValidatedReceiver = errors.New("can only update email on validated receiver")
 
 type Receiver struct {
 	Id            uint
