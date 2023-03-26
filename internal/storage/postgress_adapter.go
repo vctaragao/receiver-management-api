@@ -3,7 +3,6 @@ package storage
 import (
 	"os"
 
-	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/storage/schemas"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -37,41 +36,4 @@ func NewPostgress() *Postgress {
 	return &Postgress{
 		Db: db,
 	}
-}
-
-func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
-	receiver := schemas.Receiver{
-		CorporateName: r.CorporateName,
-		CpfCnpj:       r.CpfCnpj,
-		Email:         r.Email,
-		Status:        r.Status,
-	}
-
-	result := p.Db.Create(&receiver)
-
-	if result.Error != nil {
-		return &entity.Receiver{}, ErrUnableToInsert
-	}
-
-	r.Id = receiver.ID
-
-	return r, nil
-}
-
-func (postgres *Postgress) AddPix(receiverId uint, p *entity.Pix) (*entity.Pix, error) {
-	pix := schemas.Pix{
-		Type:       p.Type,
-		Key:        p.Key,
-		ReceiverId: receiverId,
-	}
-
-	result := postgres.Db.Create(&pix)
-
-	if result.Error != nil {
-		return &entity.Pix{}, ErrUnableToInsert
-	}
-
-	p.Id = pix.ID
-
-	return p, nil
 }

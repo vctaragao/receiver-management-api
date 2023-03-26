@@ -16,6 +16,7 @@ var ErrInvalidEmail = errors.New("invalid email")
 var ErrInvalidStatus = errors.New("invalid status")
 var ErrInvalidCpfCnpj = errors.New("invalid cpf or cnpj")
 var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
+var ErrCanOlyUpdateEmailOnValidatedReceiver = errors.New("can only update email on validated receiver")
 
 type Receiver struct {
 	Id            uint
@@ -74,4 +75,36 @@ func (r *Receiver) hasValidStatus() bool {
 
 func GetValidReciverStatus() []string {
 	return []string{STATUS_DRAFT, STATUS_VALID}
+}
+
+func (r *Receiver) Update(corporateName, cpfCnpj, email string) error {
+	if !r.canUpdate(corporateName, cpfCnpj) {
+		return ErrCanOlyUpdateEmailOnValidatedReceiver
+	}
+
+	if corporateName != "" {
+		r.CorporateName = corporateName
+	}
+
+	if cpfCnpj != "" {
+		r.CpfCnpj = cpfCnpj
+	}
+
+	if email != "" {
+		r.Email = email
+	}
+
+	return nil
+}
+
+func (r *Receiver) canUpdate(corporateName, cpfCnpj string) bool {
+	if r.Status == STATUS_DRAFT || (corporateName == "" && cpfCnpj == "") {
+		return true
+	}
+
+	return false
+}
+
+func (r *Receiver) IsInDraft() bool {
+	return r.Status == STATUS_DRAFT
 }

@@ -7,4 +7,5 @@ import (
 
 func RegisterRouter(e *echo.Echo, rm *application.ReceiverManagement) {
 	e.POST("/create", CreateReceiver(rm))
+	e.PATCH("/update", UpdateReceiver(rm))
 }

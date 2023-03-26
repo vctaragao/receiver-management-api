@@ -20,10 +20,6 @@ type ReceiverOutputDto struct {
 	ReceiverInputDto
 }
 
-type ErrorOutputDto struct {
-	Message string `json:"message"`
-}
-
 func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		dto := new(ReceiverInputDto)
@@ -35,18 +31,10 @@ func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 		resultDto, err := rm.Create(dto.CorporateName, dto.CpfCnpj, dto.Email, dto.PixType, dto.PixKey)
 
 		if err != nil {
-			returnError(ctx, rm, err)
+			returnError(ctx, rm.IsCreateBussinesLogicError, err)
 			return nil
 		}
 
 		return ctx.JSON(http.StatusOK, &ReceiverOutputDto{Id: resultDto.Id, ReceiverInputDto: *dto})
-	}
-}
-
-func returnError(ctx echo.Context, rm *application.ReceiverManagement, err error) {
-	if rm.IsCreateBussinesLogicError(err) {
-		ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
-	} else {
-		ctx.JSON(http.StatusInternalServerError, &ErrorOutputDto{Message: "erro inesperado"})
 	}
 }
