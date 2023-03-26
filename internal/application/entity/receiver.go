@@ -108,3 +108,7 @@ func (r *Receiver) canUpdate(corporateName, cpfCnpj string) bool {
 
 	return true
 }
+
+func (r *Receiver) IsInDraft() bool {
+	return r.Status == STATUS_DRAFT
+}

@@ -13,18 +13,23 @@ func (u *Update) Execute(dto *InputDto) (*OutputDto, error) {
 	if err != nil {
 		return returnError(&findingReceiverError{err: err})
 	}
-
 	if err := u.updateReciver(receiver, dto); err != nil {
 		return returnError(err)
 	}
 
-	if err := u.updatePix(pix, dto); err != nil {
-		return returnError(err)
+	if receiver.IsInDraft() {
+		if err := u.updatePix(pix, dto); err != nil {
+			return returnError(err)
+		}
 	}
 
 	out := &OutputDto{
-		Id:       receiver.Id,
-		InputDto: *dto,
+		CorporateName: receiver.CorporateName,
+		CpfCnpj:       receiver.CpfCnpj,
+		Email:         receiver.Email,
+		ReceiverId:    receiver.Id,
+		PixType:       pix.Type,
+		PixKey:        pix.Key,
 	}
 
 	return out, nil

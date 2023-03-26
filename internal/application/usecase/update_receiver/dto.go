@@ -10,6 +10,10 @@ type InputDto struct {
 }
 
 type OutputDto struct {
-	Id uint
-	InputDto
+	ReceiverId    uint
+	CorporateName string
+	CpfCnpj       string
+	Email         string
+	PixType       string
+	PixKey        string
 }

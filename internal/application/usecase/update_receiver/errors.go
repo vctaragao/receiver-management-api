@@ -6,9 +6,7 @@ import (
 )
 
 var iPixErr *invalidPixErr
-
-// var uPixErr *UpdatingPixErr
-
+var uPixErr *UpdatingPixErr
 var iReceiverErr *invalidReceiverErr
 var uReceiverErr *UpdatingReceiverErr
 var fReceiverErr *findingReceiverError
