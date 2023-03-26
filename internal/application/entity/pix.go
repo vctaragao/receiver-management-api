@@ -44,7 +44,7 @@ func (p *Pix) Validate() error {
 }
 
 func (p *Pix) isValidType() bool {
-	for _, t := range getValidTypes() {
+	for _, t := range GetValidTypes() {
 		if t == p.Type {
 			return true
 		}
@@ -76,7 +76,7 @@ func (p *Pix) isValidRandomKey() bool {
 	return helper.MatchPattern(`/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i`, p.Key)
 }
 
-func getValidTypes() []string {
+func GetValidTypes() []string {
 	return []string{CPF, CNPJ, EMAIL, PHONE, RANDOM_KEY}
 }
 

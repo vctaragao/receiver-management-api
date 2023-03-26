@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+const PAGE_SIZE = 10
+
 func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	receiver := schemas.Receiver{
 		CorporateName: r.CorporateName,
@@ -63,4 +65,53 @@ func (postgress *Postgress) UpdateReceiver(r *entity.Receiver) (*entity.Receiver
 	}
 
 	return r, nil
+}
+
+func (postgress *Postgress) FindReceivers(page int) ([]entity.Receiver, error) {
+	var records []schemas.Receiver
+	err := postgress.Db.
+		Preload("Pix").
+		Limit(PAGE_SIZE).
+		Offset(PAGE_SIZE * (page - 1)).
+		Find(&records).Error
+
+	if err != nil {
+		return []entity.Receiver{}, ErrUnableToFind
+	}
+
+	return createReceiversSlice(records), nil
+}
+
+func (postgress *Postgress) FindReceiversBy(searchParam string, page int) ([]entity.Receiver, error) {
+	var records []schemas.Receiver
+	err := postgress.Db.
+		Preload("Pix").
+		Where("corporate_name = ? OR status = ? OR EXISTS (SELECT 1 FROM pixes WHERE receiver_id = receivers.id AND (type = ? OR key = ?))", searchParam, searchParam, searchParam, searchParam).
+		Limit(PAGE_SIZE).
+		Offset(PAGE_SIZE * (page - 1)).
+		Find(&records).Error
+
+	if err != nil {
+		return []entity.Receiver{}, ErrUnableToFind
+	}
+
+	return createReceiversSlice(records), nil
+}
+
+func createReceiversSlice(records []schemas.Receiver) []entity.Receiver {
+	var receivers []entity.Receiver
+	for _, record := range records {
+		receiver := *entity.NewReceiver(record.CorporateName, record.CpfCnpj, record.Email, record.Status)
+		receiver.Id = record.ID
+
+		receiver.SetPix(&entity.Pix{
+			Id:   record.Pix[0].ID,
+			Type: record.Pix[0].Type,
+			Key:  record.Pix[0].Key,
+		})
+
+		receivers = append(receivers, receiver)
+	}
+
+	return receivers
 }
