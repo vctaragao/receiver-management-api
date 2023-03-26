@@ -57,6 +57,11 @@ func (s *IntegrationSuite) findInDatabase(schema interface{}, expectedFields map
 	s.db.Where(expectedFields).Find(&schema)
 }
 
+func (s *IntegrationSuite) seedDatabase(schemaWithData interface{}) interface{} {
+	s.db.Create(schemaWithData)
+	return schemaWithData
+}
+
 func TestIntegrationSuite(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test suite")

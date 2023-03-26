@@ -33,10 +33,11 @@ func (postgress *Postgress) GetReceiverWithPix(receiverId uint) (*entity.Receive
 	}
 
 	r := &entity.Receiver{
-		Id:      receiverId,
-		CpfCnpj: receiver.CpfCnpj,
-		Email:   receiver.Email,
-		Status:  receiver.Status,
+		Id:            receiverId,
+		CorporateName: receiver.CorporateName,
+		CpfCnpj:       receiver.CpfCnpj,
+		Email:         receiver.Email,
+		Status:        receiver.Status,
 	}
 
 	p := &entity.Pix{

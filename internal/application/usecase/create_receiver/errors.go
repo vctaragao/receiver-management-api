@@ -42,7 +42,7 @@ func (e *CreatingPixErr) Error() string {
 	return fmt.Sprintf("creating pix: %v", e.err)
 }
 
-func IsCreateBussinesLogicError(err error) bool {
+func IsBussinesLogicError(err error) bool {
 	if errors.As(err, &cPixErr) || errors.As(err, &cReceiverErr) {
 		return true
 	}

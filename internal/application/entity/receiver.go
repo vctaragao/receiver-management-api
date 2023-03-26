@@ -98,15 +98,11 @@ func (r *Receiver) Update(corporateName, cpfCnpj, email string) error {
 }
 
 func (r *Receiver) canUpdate(corporateName, cpfCnpj string) bool {
-	if r.Status == STATUS_DRAFT {
+	if r.Status == STATUS_DRAFT || (corporateName == "" && cpfCnpj == "") {
 		return true
 	}
 
-	if corporateName != "" || cpfCnpj != "" {
-		return false
-	}
-
-	return true
+	return false
 }
 
 func (r *Receiver) IsInDraft() bool {

@@ -13,6 +13,7 @@ func (u *Update) Execute(dto *InputDto) (*OutputDto, error) {
 	if err != nil {
 		return returnError(&findingReceiverError{err: err})
 	}
+
 	if err := u.updateReciver(receiver, dto); err != nil {
 		return returnError(err)
 	}
@@ -27,6 +28,7 @@ func (u *Update) Execute(dto *InputDto) (*OutputDto, error) {
 		CorporateName: receiver.CorporateName,
 		CpfCnpj:       receiver.CpfCnpj,
 		Email:         receiver.Email,
+		Status:        receiver.Status,
 		ReceiverId:    receiver.Id,
 		PixType:       pix.Type,
 		PixKey:        pix.Key,

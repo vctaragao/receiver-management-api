@@ -14,6 +14,7 @@ type OutputDto struct {
 	CorporateName string
 	CpfCnpj       string
 	Email         string
+	Status        string
 	PixType       string
 	PixKey        string
 }

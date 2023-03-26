@@ -24,12 +24,14 @@ func (postgres *Postgress) AddPix(receiverId uint, p *entity.Pix) (*entity.Pix, 
 
 func (postgress *Postgress) UpdatePix(p *entity.Pix) (*entity.Pix, error) {
 	pix := &schemas.Pix{
-		Type:  p.Type,
-		Key:   p.Key,
 		Model: gorm.Model{ID: p.Id},
 	}
+	result := postgress.Db.Model(pix).Updates(map[string]interface{}{
+		"Type": p.Type,
+		"key":  p.Key,
+	})
 
-	if err := postgress.Db.Save(pix).Error; err != nil {
+	if result.Error != nil {
 		return &entity.Pix{}, ErrUnableToUpdate
 	}
 
