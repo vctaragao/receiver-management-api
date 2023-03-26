@@ -12,26 +12,23 @@ const (
 	MAX_EMAIL_LENGTH = 250
 )
 
-var ErrInvalidCpf = errors.New("invalid cpf")
-var ErrInvalidCnpj = errors.New("invalid cnpj")
 var ErrInvalidEmail = errors.New("invalid email")
 var ErrInvalidStatus = errors.New("invalid status")
+var ErrInvalidCpfCnpj = errors.New("invalid cpf or cnpj")
 var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
 
 type Receiver struct {
 	Id            uint
 	CorporateName string
-	Cpf           string
-	Cnpj          string
+	CpfCnpj       string
 	Email         string
 	Status        string
 }
 
-func NewReceiver(corporateName, cpf, cnpj, email, status string) *Receiver {
+func NewReceiver(corporateName, cpfCnpj, email, status string) *Receiver {
 	return &Receiver{
 		CorporateName: corporateName,
-		Cpf:           cpf,
-		Cnpj:          cnpj,
+		CpfCnpj:       cpfCnpj,
 		Email:         email,
 		Status:        status,
 	}
@@ -42,12 +39,8 @@ func (r *Receiver) Validate() error {
 		return ErrInvalidCorporateName
 	}
 
-	if r.Cpf != "" && !helper.IsValidCpf(r.Cpf) {
-		return ErrInvalidCpf
-	}
-
-	if r.Cnpj != "" && !helper.IsValidCnpj(r.Cnpj) {
-		return ErrInvalidCnpj
+	if r.CpfCnpj != "" && !helper.IsValidCpf(r.CpfCnpj) && !helper.IsValidCnpj(r.CpfCnpj) {
+		return ErrInvalidCpfCnpj
 	}
 
 	if r.Email != "" && !r.hasValidEmail() {

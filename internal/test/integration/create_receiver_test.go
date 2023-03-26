@@ -14,8 +14,7 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 
 	params := http.ReceiverInputDto{
 		CorporateName: "Nome",
-		Cpf:           "041.485.353-92",
-		Cnpj:          "",
+		CpfCnpj:       "041.485.353-92",
 		Email:         "bryan_barbosa@prcondominios.com.br",
 		PixType:       "CPF",
 		PixKey:        "041.485.353-92",
@@ -37,15 +36,13 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationSuccess() {
 	s.firstInDatabase(receiver, map[string]interface{}{
 		"id":             result.Id,
 		"corporate_name": params.CorporateName,
-		"cpf":            params.Cpf,
-		"cnpj":           params.Cnpj,
+		"cpf_cnpj":       params.CpfCnpj,
 		"email":          params.Email,
 		"status":         entity.STATUS_DRAFT,
 	})
 
 	assert.Equal(t, result.Id, receiver.ID)
-	assert.Equal(t, result.ReceiverInputDto.Cpf, receiver.Cpf)
-	assert.Equal(t, result.ReceiverInputDto.Cnpj, receiver.Cnpj)
+	assert.Equal(t, result.ReceiverInputDto.CpfCnpj, receiver.CpfCnpj)
 	assert.Equal(t, result.ReceiverInputDto.Email, receiver.Email)
 	assert.Equal(t, result.ReceiverInputDto.CorporateName, receiver.CorporateName)
 
@@ -66,8 +63,7 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationBadResponse() {
 
 	params := http.ReceiverInputDto{
 		CorporateName: "Nome",
-		Cpf:           "041.485.353",
-		Cnpj:          "",
+		CpfCnpj:       "041.485.353",
 		Email:         "bryan_barbosa@prcondominios.com.br",
 		PixType:       "CPF",
 		PixKey:        "041.485.353-92",
@@ -88,8 +84,7 @@ func (s *IntegrationSuite) TestCreateReceiverIntegrationBadResponse() {
 	receivers := []schemas.Receiver{}
 	s.findInDatabase(receivers, map[string]interface{}{
 		"corporate_name": params.CorporateName,
-		"cpf":            params.Cpf,
-		"cnpj":           params.Cnpj,
+		"cpf_cnpj":       params.CpfCnpj,
 		"email":          params.Email,
 		"status":         entity.STATUS_DRAFT,
 	})

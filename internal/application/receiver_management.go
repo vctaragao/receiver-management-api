@@ -15,11 +15,10 @@ func NewReceiverManagement(repo entity.Repository) *ReceiverManagement {
 	}
 }
 
-func (rm *ReceiverManagement) Create(corporateName, cpf, cnpj, email, pixType, pixKey string) (*create_receiver.OutputDto, error) {
+func (rm *ReceiverManagement) Create(corporateName, cpfCnpj, email, pixType, pixKey string) (*create_receiver.OutputDto, error) {
 	dto := &create_receiver.InputDto{
 		CorporateName: corporateName,
-		Cpf:           cpf,
-		Cnpj:          cnpj,
+		CpfCnpj:       cpfCnpj,
 		Email:         email,
 		PixType:       pixType,
 		PixKey:        pixKey,

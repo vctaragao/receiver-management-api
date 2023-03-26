@@ -18,8 +18,7 @@ type testCase struct {
 
 var inputDto = InputDto{
 	CorporateName: "Lara Natália Ana Almeida",
-	Cpf:           "009.016.853-48",
-	Cnpj:          "",
+	CpfCnpj:       "009.016.853-48",
 	Email:         "laranataliaalmeida@chavao.com.br",
 	PixType:       "CPF",
 	PixKey:        "009.016.853-48",
@@ -39,8 +38,7 @@ var testCases = []testCase{
 		description: "if an error accour on validating the receiver return error",
 		input: &InputDto{
 			CorporateName: inputDto.CorporateName,
-			Cpf:           inputDto.Cpf,
-			Cnpj:          inputDto.Cnpj,
+			CpfCnpj:       inputDto.CpfCnpj,
 			Email:         "laranataliaalmeidachavao.com.br",
 			PixType:       inputDto.PixType,
 			PixKey:        inputDto.PixKey,
@@ -52,8 +50,7 @@ var testCases = []testCase{
 		description: "if an error accour on validating the pix return error",
 		input: &InputDto{
 			CorporateName: inputDto.CorporateName,
-			Cpf:           inputDto.Cpf,
-			Cnpj:          inputDto.Cnpj,
+			CpfCnpj:       inputDto.CpfCnpj,
 			Email:         inputDto.Email,
 			PixType:       "invalidType",
 			PixKey:        inputDto.PixKey,
@@ -105,7 +102,7 @@ func setupMock(tc testCase) *mocks.MockRepo {
 }
 
 func setAddReceiverExpectation(tc testCase, repo *mocks.MockRepo) uint {
-	receiver_param := entity.NewReceiver(tc.input.CorporateName, tc.input.Cpf, tc.input.Cnpj, tc.input.Email, entity.STATUS_DRAFT)
+	receiver_param := entity.NewReceiver(tc.input.CorporateName, tc.input.CpfCnpj, tc.input.Email, entity.STATUS_DRAFT)
 	receiver_return := *receiver_param
 	receiver_return.Id = 1
 
