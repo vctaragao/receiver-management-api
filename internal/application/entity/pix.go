@@ -79,3 +79,13 @@ func (p *Pix) isValidRandomKey() bool {
 func getValidTypes() []string {
 	return []string{CPF, CNPJ, EMAIL, PHONE, RANDOM_KEY}
 }
+
+func (p *Pix) Update(t, key string) {
+	if t != "" {
+		p.Type = t
+	}
+
+	if key != "" {
+		p.Key = key
+	}
+}

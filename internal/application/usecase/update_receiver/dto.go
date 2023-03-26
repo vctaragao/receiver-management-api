@@ -1,6 +1,7 @@
 package update_receiver
 
 type InputDto struct {
+	ReceiverId    uint
 	CorporateName string
 	Cpf           string
 	Cnpj          string

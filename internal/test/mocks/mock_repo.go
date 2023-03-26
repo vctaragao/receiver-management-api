@@ -14,7 +14,22 @@ func (mr *MockRepo) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	return args.Get(0).(*entity.Receiver), args.Error(1)
 }
 
+func (mr *MockRepo) UpdateReceiver(r *entity.Receiver) (*entity.Receiver, error) {
+	args := mr.Called(r)
+	return args.Get(0).(*entity.Receiver), args.Error(1)
+}
+
+func (mr *MockRepo) GetReceiverWithPix(receiverId uint) (*entity.Receiver, *entity.Pix, error) {
+	args := mr.Called(receiverId)
+	return args.Get(0).(*entity.Receiver), args.Get(1).(*entity.Pix), args.Error(2)
+}
+
 func (mr *MockRepo) AddPix(receiverId uint, p *entity.Pix) (*entity.Pix, error) {
 	args := mr.Called(receiverId, p)
+	return args.Get(0).(*entity.Pix), args.Error(1)
+}
+
+func (mr *MockRepo) UpdatePix(p *entity.Pix) (*entity.Pix, error) {
+	args := mr.Called(p)
 	return args.Get(0).(*entity.Pix), args.Error(1)
 }

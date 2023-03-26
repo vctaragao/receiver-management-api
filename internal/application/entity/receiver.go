@@ -17,6 +17,7 @@ var ErrInvalidCnpj = errors.New("invalid cnpj")
 var ErrInvalidEmail = errors.New("invalid email")
 var ErrInvalidStatus = errors.New("invalid status")
 var ErrInvalidCorporateName = errors.New("corporate name must be greater that 2 caracters")
+var ErrCanOlyUpdateEmailOnValidatedReceiver = errors.New("can only update email on validated recever")
 
 type Receiver struct {
 	Id            uint
@@ -84,8 +85,8 @@ func GetValidReciverStatus() []string {
 }
 
 func (r *Receiver) Update(corporateName, cpf, cnpj, email string) error {
-	if r.canUpdate(corporateName, cpf, cnpj) {
-		return errors.New("cantUpdate")
+	if !r.canUpdate(corporateName, cpf, cnpj) {
+		return ErrCanOlyUpdateEmailOnValidatedReceiver
 	}
 
 	if corporateName != "" {

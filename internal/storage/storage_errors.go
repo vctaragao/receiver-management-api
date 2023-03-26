@@ -1,5 +1,9 @@
 package storage
 
-import "fmt"
+import (
+	"errors"
+)
 
-var ErrUnableToInsert = fmt.Errorf("unable to insert into database")
+var ErrUnableToFetch = errors.New("unable to fetch record")
+var ErrUnableToUpdate = errors.New("unable to update record")
+var ErrUnableToInsert = errors.New("unable to insert into database")

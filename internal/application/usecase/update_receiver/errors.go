@@ -5,9 +5,12 @@ import (
 	"fmt"
 )
 
-var sPixErr *SavingPixErr
-var cPixErr *CreatingPixErr
+var iPixErr *invalidPixErr
+
+// var uPixErr *UpdatingPixErr
+
 var iReceiverErr *invalidReceiverErr
+var uReceiverErr *UpdatingReceiverErr
 var fReceiverErr *findingReceiverError
 
 type findingReceiverError struct {
@@ -26,26 +29,30 @@ func (e *invalidReceiverErr) Error() string {
 	return fmt.Sprintf("validating receiver: %v", e.err)
 }
 
-type SavingPixErr struct {
+type invalidPixErr struct {
 	err error
 }
 
-func (e *SavingPixErr) Error() string {
-	return fmt.Sprintf("saving pix: %v", e.err)
+func (e *invalidPixErr) Error() string {
+	return fmt.Sprintf("validating pix: %v", e.err)
 }
 
-type CreatingPixErr struct {
+type UpdatingPixErr struct {
 	err error
 }
 
-func (e *CreatingPixErr) Error() string {
-	return fmt.Sprintf("creating pix: %v", e.err)
+func (e *UpdatingPixErr) Error() string {
+	return fmt.Sprintf("updating pix: %v", e.err)
 }
 
-func IsCreateBussinesLogicError(err error) bool {
-	if errors.As(err, &cPixErr) || errors.As(err, &fReceiverErr) {
-		return true
-	}
+type UpdatingReceiverErr struct {
+	err error
+}
 
-	return false
+func (e *UpdatingReceiverErr) Error() string {
+	return fmt.Sprintf("updating receiver: %v", e.err)
+}
+
+func IsBussinesLogicError(err error) bool {
+	return errors.As(err, &iReceiverErr) || errors.As(err, &fReceiverErr) || errors.As(err, &iPixErr) || errors.As(err, &uReceiverErr)
 }
