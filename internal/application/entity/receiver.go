@@ -82,3 +82,39 @@ func (r *Receiver) hasValidStatus() bool {
 func GetValidReciverStatus() []string {
 	return []string{STATUS_DRAFT, STATUS_VALID}
 }
+
+func (r *Receiver) Update(corporateName, cpf, cnpj, email string) error {
+	if r.canUpdate(corporateName, cpf, cnpj) {
+		return errors.New("cantUpdate")
+	}
+
+	if corporateName != "" {
+		r.CorporateName = corporateName
+	}
+
+	if cpf != "" {
+		r.Cpf = cpf
+	}
+
+	if cnpj != "" {
+		r.Cnpj = cnpj
+	}
+
+	if email != "" {
+		r.Email = email
+	}
+
+	return nil
+}
+
+func (r *Receiver) canUpdate(corporateName, cpf, cnpj string) bool {
+	if r.Status == STATUS_DRAFT {
+		return true
+	}
+
+	if corporateName != "" || cpf != "" || cnpj != "" {
+		return false
+	}
+
+	return true
+}
