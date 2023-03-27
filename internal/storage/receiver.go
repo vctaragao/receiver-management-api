@@ -28,7 +28,10 @@ func (p *Postgress) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 }
 
 func (postgress *Postgress) GetReceiverWithPix(receiverId uint) (*entity.Receiver, *entity.Pix, error) {
-	var receiver schemas.Receiver
+	receiver := schemas.Receiver{
+		Model: gorm.Model{ID: receiverId},
+	}
+
 	err := postgress.Db.Model(&schemas.Receiver{}).Preload("Pix").First(&receiver).Error
 	if err != nil {
 		return &entity.Receiver{}, &entity.Pix{}, ErrUnableToFetch
