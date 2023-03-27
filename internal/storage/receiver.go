@@ -67,7 +67,7 @@ func (postgress *Postgress) UpdateReceiver(r *entity.Receiver) (*entity.Receiver
 	return r, nil
 }
 
-func (postgress *Postgress) FindReceivers(page int) ([]entity.Receiver, error) {
+func (postgress *Postgress) FindReceivers(page int) ([]entity.Receiver, int, error) {
 	var records []schemas.Receiver
 	err := postgress.Db.
 		Preload("Pix").
@@ -76,13 +76,23 @@ func (postgress *Postgress) FindReceivers(page int) ([]entity.Receiver, error) {
 		Find(&records).Error
 
 	if err != nil {
-		return []entity.Receiver{}, ErrUnableToFind
+		return []entity.Receiver{}, 0, ErrUnableToFind
 	}
 
-	return createReceiversSlice(records), nil
+	var quantity int64
+	err = postgress.Db.
+		Model(&schemas.Receiver{}).
+		Preload("Pix").
+		Count(&quantity).Error
+
+	if err != nil {
+		return []entity.Receiver{}, 0, ErrUnableToFind
+	}
+
+	return createReceiversSlice(records), int(quantity), nil
 }
 
-func (postgress *Postgress) FindReceiversBy(searchParam string, page int) ([]entity.Receiver, error) {
+func (postgress *Postgress) FindReceiversBy(searchParam string, page int) ([]entity.Receiver, int, error) {
 	var records []schemas.Receiver
 	err := postgress.Db.
 		Preload("Pix").
@@ -92,10 +102,21 @@ func (postgress *Postgress) FindReceiversBy(searchParam string, page int) ([]ent
 		Find(&records).Error
 
 	if err != nil {
-		return []entity.Receiver{}, ErrUnableToFind
+		return []entity.Receiver{}, 0, ErrUnableToFind
 	}
 
-	return createReceiversSlice(records), nil
+	var quantity int64
+	err = postgress.Db.
+		Model(&schemas.Receiver{}).
+		Preload("Pix").
+		Where("corporate_name = ? OR status = ? OR EXISTS (SELECT 1 FROM pixes WHERE receiver_id = receivers.id AND (type = ? OR key = ?))", searchParam, searchParam, searchParam, searchParam).
+		Count(&quantity).Error
+
+	if err != nil {
+		return []entity.Receiver{}, 0, ErrUnableToFind
+	}
+
+	return createReceiversSlice(records), int(quantity), nil
 }
 
 func createReceiversSlice(records []schemas.Receiver) []entity.Receiver {

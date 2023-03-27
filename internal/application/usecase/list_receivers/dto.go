@@ -9,4 +9,5 @@ type InputDto struct {
 
 type OutputDto struct {
 	Receivers []entity.Receiver
+	Total     int
 }

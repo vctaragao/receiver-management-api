@@ -10,21 +10,18 @@ type List struct {
 
 func (l *List) Execute(dto *InputDto) (*OutputDto, error) {
 	var receivers []entity.Receiver
+	var total int
 	var err error
 
 	if dto.SearchParam == "" {
-		receivers, err = l.Repo.FindReceivers(dto.Page)
+		receivers, total, err = l.Repo.FindReceivers(dto.Page)
 	} else {
-		receivers, err = l.Repo.FindReceiversBy(dto.SearchParam, dto.Page)
+		receivers, total, err = l.Repo.FindReceiversBy(dto.SearchParam, dto.Page)
 	}
 
 	if err != nil {
-		return returnError(err)
+		return &OutputDto{}, &findingReceiverErr{err: err}
 	}
 
-	return &OutputDto{Receivers: receivers}, nil
-}
-
-func returnError(err error) (*OutputDto, error) {
-	return &OutputDto{}, err
+	return &OutputDto{Receivers: receivers, Total: total}, nil
 }
