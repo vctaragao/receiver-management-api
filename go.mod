@@ -3,6 +3,7 @@ module github.com/vctaragao/receiver-management-api
 go 1.20
 
 require (
+	github.com/brianvoe/gofakeit v3.18.0+incompatible
 	github.com/brianvoe/gofakeit/v6 v6.20.2
 	github.com/dimiro1/faker v0.0.0-20160302003601-367c84ded970
 	github.com/google/uuid v1.3.0

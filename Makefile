@@ -1,3 +1,9 @@
+up:
+	docker compose up -d && docker exec -it receiver-management-api bash -c "go run -v ./database/seed/"
+
+seed:
+	docker exec -it receiver-management-api bash -c "go run -v ./database/seed/"
+
 run:
 	docker exec -it receiver-management-api bash -c "go run -v ./cmd/server/"
 
@@ -10,7 +16,7 @@ app:
 test-integration:
 	docker exec -it receiver-management-api bash -c "go test ./... -v --run Integration"
 
-database:
+db:
 	docker exec -it receiver-management-db bash -c "psql -d receiver-management -U app"
 
 unit-test-cover:

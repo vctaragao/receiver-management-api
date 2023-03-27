@@ -9,6 +9,7 @@ import (
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/http"
 	"github.com/vctaragao/receiver-management-api/internal/storage"
+	"github.com/vctaragao/receiver-management-api/internal/storage/schemas"
 	"github.com/vctaragao/receiver-management-api/internal/test/integration/helper"
 	"gorm.io/gorm"
 )
@@ -27,6 +28,9 @@ func (s *IntegrationSuite) startRepo() entity.Repository {
 	repo := storage.NewPostgress()
 	repo.Db = repo.Db.Begin()
 	repo.Db.SavePoint("init")
+
+	repo.Db.Unscoped().Delete(&schemas.Pix{}, "1=1")
+	repo.Db.Unscoped().Delete(&schemas.Receiver{}, "1=1")
 
 	s.db = repo.Db
 	return repo
