@@ -139,3 +139,17 @@ func createReceiversSlice(records []schemas.Receiver) []entity.Receiver {
 
 	return receivers
 }
+
+func (postgress *Postgress) DeleteReceivers(receiversIds []uint) error {
+	var receiversToDelete []schemas.Receiver
+	for _, id := range receiversIds {
+		receiver := schemas.Receiver{Model: gorm.Model{ID: id}}
+		receiversToDelete = append(receiversToDelete, receiver)
+	}
+
+	if err := postgress.Db.Select("Pix").Delete(&receiversToDelete).Error; err != nil {
+		return ErrUnableToDelete
+	}
+
+	return nil
+}

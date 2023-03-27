@@ -9,4 +9,5 @@ func RegisterRouter(e *echo.Echo, rm *application.ReceiverManagement) {
 	e.GET("/list", ListReceiver(rm))
 	e.POST("/create", CreateReceiver(rm))
 	e.PATCH("/update", UpdateReceiver(rm))
+	e.DELETE("/delete", DeleteReceiver(rm))
 }
