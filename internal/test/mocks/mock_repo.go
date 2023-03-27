@@ -14,8 +14,8 @@ func (mr *MockRepo) AddReceiver(r *entity.Receiver) (*entity.Receiver, error) {
 	return args.Get(0).(*entity.Receiver), args.Error(1)
 }
 
-func (mr *MockRepo) UpdateReceiver(r *entity.Receiver) (*entity.Receiver, error) {
-	args := mr.Called(r)
+func (mr *MockRepo) UpdateReceiver(r *entity.Receiver, corporateName, cpfCnpj, email string) (*entity.Receiver, error) {
+	args := mr.Called(r, corporateName, cpfCnpj, email)
 	return args.Get(0).(*entity.Receiver), args.Error(1)
 }
 
