@@ -52,5 +52,8 @@ func (e *UpdatingReceiverErr) Error() string {
 }
 
 func IsBussinesLogicError(err error) bool {
-	return errors.As(err, &iReceiverErr) || errors.As(err, &fReceiverErr) || errors.As(err, &iPixErr) || errors.As(err, &uReceiverErr)
+	return errors.As(err, &iReceiverErr) ||
+		errors.As(err, &fReceiverErr) ||
+		errors.As(err, &iPixErr) ||
+		errors.As(err, &uReceiverErr)
 }

@@ -37,8 +37,7 @@ func UpdateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 		resultDto, err := rm.Update(dto.ReceiverId, dto.CorporateName, dto.CpfCnpj, dto.Email, dto.PixType, dto.PixKey)
 
 		if err != nil {
-			returnError(ctx, rm.IsUpdateBussinesLogicError, err)
-			return nil
+			return ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
 		}
 
 		return ctx.JSON(http.StatusOK, &UpdateOutputDto{

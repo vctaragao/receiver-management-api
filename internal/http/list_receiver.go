@@ -43,8 +43,7 @@ func ListReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 
 		resultDto, err := rm.List(dto.Search, dto.Page)
 		if err != nil {
-			returnError(ctx, rm.IsCreateBussinesLogicError, err)
-			return nil
+			return ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
 		}
 
 		outputDto := createListOutPuts(resultDto.Receivers)
