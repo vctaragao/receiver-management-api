@@ -1,8 +1,8 @@
 # Receiver-Management API
 
-## Projeto focado em desenvolver um CRUD para se trabalhar com recebedores e chaves pix segunido boas práticas e testes
+### Projeto focado em desenvolver um CRUD para se trabalhar com recebedores e chaves pix seguindo boas práticas de desenvolvimento e testes
 
-O projeto teve como base as seguintes especificações: [Requisitos técnicos](https://docs.google.com/document/d/1XyjrQZgWG_m42OK6YR6MIm5MXY5INvSNWxEuFyexaaw/edit?usp=sharing)
+O projeto teve como base a seguinte especificação: [Requisitos técnicos](https://docs.google.com/document/d/1XyjrQZgWG_m42OK6YR6MIm5MXY5INvSNWxEuFyexaaw/edit?usp=sharing)
 
 ## Requisitos minimos para rodar esse projeto localmente:
 
@@ -18,7 +18,7 @@ O projeto teve como base as seguintes especificações: [Requisitos técnicos](h
 git clone https://github.com/vctaragao/receiver-management-api.git
 ```
 
-2. Sentro da pasta do projeto rode o comando para subir a aplicação
+2. Dentro da pasta do projeto suba a aplicação
 
 ```bash
 cd <path-to-project>/receiver-management-api
@@ -40,7 +40,7 @@ ____________________________________O/_______
 ⇨ http server started on [::]:1323
 ```
 
-4. Para rodar os testes internos da aplicação e de integração da aplicação
+4. Para rodar os testes unitário e de integração da aplicação
 
 ```bash
 make test && make test-integration
@@ -54,7 +54,7 @@ make test && make test-integration
 
 Para a arquitetura desse projeto foi levado como base a Clean Architecture. Buscando um desacoplamento entre as camadas e
 uma arquitetura gritante.
-
+![Captura de tela de 2023-03-27 20-27-05](https://user-images.githubusercontent.com/26884793/228092690-92990a92-1fd1-4151-8ae8-ed50871a105a.png)
 ```
 .
 ├── cmd
