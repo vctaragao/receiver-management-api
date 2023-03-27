@@ -51,16 +51,16 @@ func (postgress *Postgress) GetReceiverWithPix(receiverId uint) (*entity.Receive
 	return r, p, nil
 }
 
-func (postgress *Postgress) UpdateReceiver(r *entity.Receiver) (*entity.Receiver, error) {
+func (postgress *Postgress) UpdateReceiver(r *entity.Receiver, corporateName, cpfCnpj, email string) (*entity.Receiver, error) {
 	receiver := &schemas.Receiver{
-		CorporateName: r.CorporateName,
-		CpfCnpj:       r.CpfCnpj,
-		Email:         r.Email,
-		Status:        r.Status,
-		Model:         gorm.Model{ID: r.Id},
+		CorporateName: corporateName,
+		CpfCnpj:       cpfCnpj,
+		Email:         email,
 	}
 
-	if err := postgress.Db.Save(receiver).Error; err != nil {
+	err := postgress.Db.Model(&schemas.Receiver{}).Where("id = ?", r.Id).Updates(receiver).Error
+
+	if err != nil {
 		return &entity.Receiver{}, ErrUnableToUpdate
 	}
 
