@@ -46,7 +46,7 @@ func (u *Update) updateReciver(receiver *entity.Receiver, dto *InputDto) error {
 		return &invalidReceiverErr{err: err}
 	}
 
-	if _, err := u.Repo.UpdateReceiver(receiver); err != nil {
+	if _, err := u.Repo.UpdateReceiver(receiver, dto.CorporateName, dto.CpfCnpj, dto.Email); err != nil {
 		return &UpdatingReceiverErr{err: err}
 	}
 

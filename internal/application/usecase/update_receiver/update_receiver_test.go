@@ -103,7 +103,7 @@ func setUpdateReceiverExpectation(receiver_found entity.Receiver, tc testCase, r
 		err = errors.New("unexpected error")
 	}
 
-	repo.On("UpdateReceiver", &receiver_found).Return(&receiver_return, err)
+	repo.On("UpdateReceiver", &receiver_found, tc.input.CorporateName, tc.input.CpfCnpj, tc.input.Email).Return(&receiver_return, err)
 }
 
 func setUpdatePixExpectation(pix_found entity.Pix, tc testCase, repo *mocks.MockRepo) {
