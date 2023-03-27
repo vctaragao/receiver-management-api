@@ -14,7 +14,9 @@ type ListInputDto struct {
 }
 
 type ListOutputDto struct {
-	Receivers []ReceiverDto `json:"recebedores"`
+	Total       int           `json:"total_recebedores"`
+	CurrentPage int           `json:"pagina_atual"`
+	Receivers   []ReceiverDto `json:"recebedores"`
 }
 
 type ReceiverDto struct {
@@ -45,7 +47,11 @@ func ListReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 			return nil
 		}
 
-		return ctx.JSON(http.StatusOK, createListOutPuts(resultDto.Receivers))
+		outputDto := createListOutPuts(resultDto.Receivers)
+		outputDto.Total = resultDto.Total
+		outputDto.CurrentPage = dto.Page
+
+		return ctx.JSON(http.StatusOK, outputDto)
 	}
 }
 

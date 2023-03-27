@@ -31,6 +31,8 @@ func (s *IntegrationSuite) TestListReceiversByCorporateNameIntegrationSuccess() 
 	assert.NoError(t, err)
 
 	assert.Equal(t, 1, len(result.Receivers))
+	assert.Equal(t, 1, result.Total)
+	assert.Equal(t, 1, result.CurrentPage)
 
 	for _, receiver := range result.Receivers {
 		assert.Equal(t, "bryan_barbosa@prcondominios.com.br", receiver.Email)
@@ -61,6 +63,7 @@ func (s *IntegrationSuite) TestListReceiversByStatusIntegrationSuccess() {
 	assert.NoError(t, err)
 
 	assert.Equal(t, 2, len(result.Receivers))
+	assert.Equal(t, 2, result.Total)
 }
 
 func (s *IntegrationSuite) TestListReceiversByPixTypeIntegrationSuccess() {
@@ -121,6 +124,8 @@ func (s *IntegrationSuite) TestListReceiversPaginationIntegrationSuccess() {
 	assert.NoError(t, err)
 
 	assert.Equal(t, 10, len(result.Receivers))
+	assert.Equal(t, 20, result.Total)
+	assert.Equal(t, 2, result.CurrentPage)
 }
 
 func (s *IntegrationSuite) TestListReceiversPaginationNoRecordFoundIntegrationSuccess() {
