@@ -33,3 +33,13 @@ func (mr *MockRepo) UpdatePix(p *entity.Pix) (*entity.Pix, error) {
 	args := mr.Called(p)
 	return args.Get(0).(*entity.Pix), args.Error(1)
 }
+
+func (mr *MockRepo) FindReceiversBy(searchParam string, page int) ([]entity.Receiver, error) {
+	args := mr.Called(searchParam, page)
+	return args.Get(0).([]entity.Receiver), args.Error(1)
+}
+
+func (mr *MockRepo) FindReceivers(page int) ([]entity.Receiver, error) {
+	args := mr.Called(page)
+	return args.Get(0).([]entity.Receiver), args.Error(1)
+}

@@ -24,6 +24,7 @@ type Receiver struct {
 	CpfCnpj       string
 	Email         string
 	Status        string
+	Pix           *Pix
 }
 
 func NewReceiver(corporateName, cpfCnpj, email, status string) *Receiver {
@@ -77,6 +78,16 @@ func GetValidReciverStatus() []string {
 	return []string{STATUS_DRAFT, STATUS_VALID}
 }
 
+func IsValidStatus(s string) bool {
+	for _, status := range GetValidReciverStatus() {
+		if status == s {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (r *Receiver) Update(corporateName, cpfCnpj, email string) error {
 	if !r.canUpdate(corporateName, cpfCnpj) {
 		return ErrCanOlyUpdateEmailOnValidatedReceiver
@@ -107,4 +118,8 @@ func (r *Receiver) canUpdate(corporateName, cpfCnpj string) bool {
 
 func (r *Receiver) IsInDraft() bool {
 	return r.Status == STATUS_DRAFT
+}
+
+func (r *Receiver) SetPix(p *Pix) {
+	r.Pix = p
 }

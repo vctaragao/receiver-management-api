@@ -3,6 +3,7 @@ package application
 import (
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/create_receiver"
+	"github.com/vctaragao/receiver-management-api/internal/application/usecase/list_receivers"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/update_receiver"
 )
 
@@ -51,4 +52,15 @@ func (rm *ReceiverManagement) Update(receiverId uint, corporateName, cpfCnpj, em
 
 func (rm *ReceiverManagement) IsUpdateBussinesLogicError(err error) bool {
 	return update_receiver.IsBussinesLogicError(err)
+}
+
+func (rm *ReceiverManagement) List(searchParam string, page int) (*list_receivers.OutputDto, error) {
+	dto := &list_receivers.InputDto{
+		SearchParam: searchParam,
+		Page:        page,
+	}
+
+	usecase := &list_receivers.List{Repo: *rm.Repo}
+
+	return usecase.Execute(dto)
 }
