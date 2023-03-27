@@ -9,9 +9,10 @@ type Delete struct {
 }
 
 func (d *Delete) Execute(dto *InputDto) error {
-	if dto.ReceiversIds == nil {
+	if len(dto.ReceiversIds) == 0 {
 		return ErrReceiversIdsAreRequired
 	}
+
 	if err := d.Repo.DeleteReceivers(dto.ReceiversIds); err != nil {
 		return &deletingReceiverErr{err: err}
 	}

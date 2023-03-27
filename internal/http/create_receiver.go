@@ -33,6 +33,6 @@ func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 			return ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
 		}
 
-		return ctx.JSON(http.StatusOK, &ReceiverOutputDto{Id: resultDto.Id, ReceiverInputDto: *dto})
+		return ctx.JSON(http.StatusCreated, &ReceiverOutputDto{Id: resultDto.Id, ReceiverInputDto: *dto})
 	}
 }

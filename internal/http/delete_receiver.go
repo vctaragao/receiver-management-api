@@ -20,8 +20,7 @@ func DeleteReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 		}
 
 		if err := rm.Delete(dto.ReceiversIds); err != nil {
-			returnError(ctx, rm.IsDeleteBussinesLogicError, err)
-			return nil
+			return ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
 		}
 
 		return ctx.JSON(http.StatusNoContent, nil)
