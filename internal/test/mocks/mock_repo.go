@@ -43,3 +43,8 @@ func (mr *MockRepo) FindReceivers(page int) ([]entity.Receiver, int, error) {
 	args := mr.Called(page)
 	return args.Get(0).([]entity.Receiver), args.Int(1), args.Error(2)
 }
+
+func (mr *MockRepo) DeleteReceivers(receversIds []uint) error {
+	args := mr.Called(receversIds)
+	return args.Error(0)
+}

@@ -1,9 +1,10 @@
 package storage
 
 import (
+	"fmt"
+
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/storage/schemas"
-	"gorm.io/gorm"
 )
 
 const PAGE_SIZE = 10
@@ -135,4 +136,13 @@ func createReceiversSlice(records []schemas.Receiver) []entity.Receiver {
 	}
 
 	return receivers
+}
+
+func (postgress *Postgress) DeleteReceivers(receiversIds []uint) error {
+	if err := postgress.Db.Delete(&schemas.Receiver{}, receiversIds).Error; err != nil {
+		fmt.Println(err)
+		return ErrUnableToDelete
+	}
+
+	return nil
 }

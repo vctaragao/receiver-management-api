@@ -8,6 +8,8 @@ type Repository interface {
 	FindReceiversBy(searchParams string, page int) ([]Receiver, int, error)
 	FindReceivers(page int) ([]Receiver, int, error)
 
+	DeleteReceivers(receiversIds []uint) error
+
 	AddPix(receiverId uint, p *Pix) (*Pix, error)
 	UpdatePix(p *Pix) (*Pix, error)
 }

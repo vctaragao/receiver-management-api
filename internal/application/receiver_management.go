@@ -3,6 +3,7 @@ package application
 import (
 	"github.com/vctaragao/receiver-management-api/internal/application/entity"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/create_receiver"
+	"github.com/vctaragao/receiver-management-api/internal/application/usecase/delete_receiver"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/list_receivers"
 	"github.com/vctaragao/receiver-management-api/internal/application/usecase/update_receiver"
 )
@@ -63,4 +64,17 @@ func (rm *ReceiverManagement) List(searchParam string, page int) (*list_receiver
 	usecase := &list_receivers.List{Repo: *rm.Repo}
 
 	return usecase.Execute(dto)
+}
+
+func (rm *ReceiverManagement) Delete(receiversIds []uint) error {
+	dto := &delete_receiver.InputDto{
+		ReceiversIds: receiversIds,
+	}
+
+	usecase := &delete_receiver.Delete{Repo: *rm.Repo}
+
+	return usecase.Execute(dto)
+}
+func (rm *ReceiverManagement) IsDeleteBussinesLogicError(err error) bool {
+	return delete_receiver.IsBusinessLogicError(err)
 }
