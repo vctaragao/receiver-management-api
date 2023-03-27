@@ -29,10 +29,8 @@ func CreateReceiver(rm *application.ReceiverManagement) echo.HandlerFunc {
 		}
 
 		resultDto, err := rm.Create(dto.CorporateName, dto.CpfCnpj, dto.Email, dto.PixType, dto.PixKey)
-
 		if err != nil {
-			returnError(ctx, rm.IsCreateBussinesLogicError, err)
-			return nil
+			return ctx.JSON(http.StatusBadRequest, &ErrorOutputDto{Message: err.Error()})
 		}
 
 		return ctx.JSON(http.StatusOK, &ReceiverOutputDto{Id: resultDto.Id, ReceiverInputDto: *dto})

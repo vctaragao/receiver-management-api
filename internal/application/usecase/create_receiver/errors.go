@@ -43,9 +43,8 @@ func (e *CreatingPixErr) Error() string {
 }
 
 func IsBussinesLogicError(err error) bool {
-	if errors.As(err, &cPixErr) || errors.As(err, &cReceiverErr) {
-		return true
-	}
-
-	return false
+	return errors.As(err, &cPixErr) ||
+		errors.As(err, &cReceiverErr) ||
+		errors.As(err, &sPixErr) ||
+		errors.As(err, &sReceiverErr)
 }
