@@ -26,11 +26,11 @@ func (s *IntegrationSuite) SetupSuite() {
 
 func (s *IntegrationSuite) startRepo() entity.Repository {
 	repo := storage.NewPostgress()
-	repo.Db = repo.Db.Begin()
-	repo.Db.SavePoint("init")
-
 	repo.Db.Unscoped().Delete(&schemas.Pix{}, "1=1")
 	repo.Db.Unscoped().Delete(&schemas.Receiver{}, "1=1")
+
+	repo.Db = repo.Db.Begin()
+	repo.Db.SavePoint("init")
 
 	s.db = repo.Db
 	return repo

@@ -14,7 +14,7 @@ app:
 	docker exec -it receiver-management-api bash
 
 test-integration:
-	docker exec -it receiver-management-api bash -c "go test ./... -v --run Integration"
+	docker exec -it receiver-management-api bash -c "go test ./... -v --run Integration" && make seed
 
 db:
 	docker exec -it receiver-management-db bash -c "psql -d receiver-management -U app"
