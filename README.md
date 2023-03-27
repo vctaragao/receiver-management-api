@@ -54,7 +54,9 @@ make test && make test-integration
 
 Para a arquitetura desse projeto foi levado como base a Clean Architecture. Buscando um desacoplamento entre as camadas e
 uma arquitetura gritante.
+
 ![Captura de tela de 2023-03-27 20-27-05](https://user-images.githubusercontent.com/26884793/228092690-92990a92-1fd1-4151-8ae8-ed50871a105a.png)
+
 ```
 .
 ├── cmd
