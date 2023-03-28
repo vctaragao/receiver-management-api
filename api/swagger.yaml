@@ -1,0 +1,146 @@
+openapi: 3.0.0
+info:
+  title: Receiver Management API
+  version: 1.0.0
+  description: Essa API lida com operações CRUD de recebedores e pix
+
+servers:
+  - url: http://localhost:1323
+    description: Local development server
+
+paths:
+  /create:
+    post:
+      summary: Cria um novo Recebedor com Pix
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReceiver"
+      responses:
+        "201":
+          description: O Recebedor recem criado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FullReceiver"
+
+  /list:
+    parameters:
+      - name: search
+        in: query
+        required: false
+        description: Campo preenchido com o valor a ser utilizado como filtro. O filtro pode acontecer por meio de razao_social, cpf_cnpj, status, pix_type e pix_key
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Campo para determinar qual a página está sendo buscada
+        schema:
+          type: integer
+    get:
+      summary: Busca com filtro pelos recebedores
+      responses:
+        "200":
+          description: A list of all items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListReceiver"
+
+  /update:
+    patch:
+      summary: Atualiza um Recebdor e Pix
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateReceiver"
+      responses:
+        "200":
+          description: O Recebdor atualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FullReceiver"
+  /delete:
+    post:
+      summary: Remove um Recebedor e seus pixes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteReceiver"
+      responses:
+        "204":
+          description: O recebdor foi removido com sucesso
+
+components:
+  schemas:
+    FullReceiver:
+      type: object
+      properties:
+        recebedor_id:
+          type: integer
+        razao_social:
+          type: string
+        cpf_cnpj:
+          type: string
+        email:
+          type: string
+        status:
+          type: string
+        pix_type:
+          type: string
+        pix_key:
+          type: string
+    CreateReceiver:
+      type: object
+      properties:
+        razao_social:
+          type: string
+        cpf_cnpj:
+          type: string
+        email:
+          type: string
+        pix_type:
+          type: string
+        pix_key:
+          type: string
+    UpdateReceiver:
+      type: object
+      properties:
+        recebedor_id:
+          type: integer
+        razao_social:
+          type: string
+        cpf_cnpj:
+          type: string
+        email:
+          type: string
+        pix_type:
+          type: string
+        pix_key:
+          type: string
+    DeleteReceiver:
+      type: object
+      properties:
+        recebedores_ids:
+          type: array
+          items:
+            type: integer
+    ListReceiver:
+      type: object
+      properties:
+        total_recebedores:
+          type: integer
+        pagina_atual:
+          type: integer
+        recebdores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FullReceiver"
