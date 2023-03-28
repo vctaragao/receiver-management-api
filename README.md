@@ -4,13 +4,25 @@
 
 O projeto teve como base a seguinte especificação: [Requisitos técnicos](https://docs.google.com/document/d/1XyjrQZgWG_m42OK6YR6MIm5MXY5INvSNWxEuFyexaaw/edit?usp=sharing)
 
-## Requisitos minimos para rodar esse projeto localmente:
+## Sumário
+
+- [Requisitos](#requisitos)
+- [Rodar o projeto - Setup](#setup)
+- [Documentação da Api](#documentação)
+- [Arquitetura](#arquitetura)
+- [Melhorias](#melhorias)
+
+---
+
+### Requisitos
+
+Técnologias minimas necessárias para rodar e utilizar esse sistema localmente
 
 - Docker
 - Docker Compose
 - make
 
-### Passo a passo
+### Setup
 
 1. Clone esse repositório na pasta desejada
 
@@ -48,7 +60,7 @@ make test && make test-integration
 
 > Obs: Demais comandos disponiveis no arquivo Makefile
 
-### Documentação de Endpoints
+### Documentação
 
 Os endpoints da API se encontram documentados no arquivo swagger dentro de /api: [swagger](https://github.com/vctaragao/receiver-management-api/blob/main/api/swagger.yaml).
 0
@@ -109,7 +121,7 @@ uma arquitetura gritante.
 - **Domain Layer**
   - `/internal/application/entity`: Pasta para guardar o dominio do projeto (Lógicas e Regras de Negócio)
 
-## Melhorias Futuras
+## Melhorias
 
 - **Adicionar camada de validação na camada de Frameworks.**
 
