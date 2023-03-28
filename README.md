@@ -48,6 +48,12 @@ make test && make test-integration
 
 > Obs: Demais comandos disponiveis no arquivo Makefile
 
+### Documentação de Endpoints
+
+Os endpoints da API se encontram documentados no arquivo swagger dentro de /api: [swagger](https://github.com/vctaragao/receiver-management-api/blob/main/api/swagger.yaml).
+0
+Pode-se abrir o arquivo no site: [editor.swagger.io](https://editor.swagger.io/)
+
 ---
 
 ## Arquitetura
