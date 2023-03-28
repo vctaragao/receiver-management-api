@@ -19,7 +19,7 @@ func (s *IntegrationSuite) TestDeleteReceiverIntegrationSuccess() {
 
 	reqBody, _ := json.Marshal(params)
 
-	resp := s.Request("DELETE", "/delete", reqBody)
+	resp := s.Request("POST", "/delete", reqBody)
 
 	assert.Equal(t, 204, resp.StatusCode)
 
